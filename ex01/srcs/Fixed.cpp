@@ -6,7 +6,7 @@
 /*   By: suchua <suchua@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 04:31:50 by suchua            #+#    #+#             */
-/*   Updated: 2023/04/06 19:52:25 by suchua           ###   ########.fr       */
+/*   Updated: 2023/04/11 16:16:39 by suchua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,19 @@ Fixed::~Fixed(void)
 Fixed::Fixed(const Fixed &other)
 {
 	std::cout << "Copy constructor called" << std::endl;
-	this->fixedNum = other.fixedNum;
+	*this = other;
 }
 
 Fixed &Fixed::operator=(const Fixed &other)
 {
-	if (this != &other)
-	{
-		std::cout << "Copy assignment operator called" << std::endl;
-		this->fixedNum = other.fixedNum;
-	}
+	std::cout << "Copy assignment operator called" << std::endl;
+	this->fixedNum = other.fixedNum;
 	return *this;
 }
 
 Fixed::Fixed(const int num)
 {
-	this->fixedNum = num << fracBits;
+	this->fixedNum = num * (1 << fracBits);
 	std::cout << "Int constructor called" << std::endl;
 }
 

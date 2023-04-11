@@ -6,7 +6,7 @@
 /*   By: suchua <suchua@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 19:59:47 by suchua            #+#    #+#             */
-/*   Updated: 2023/04/07 00:19:37 by suchua           ###   ########.fr       */
+/*   Updated: 2023/04/11 17:15:45 by suchua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,18 @@ class	Fixed
 		int		toInt(void) const;
 	
 		// > < = !=
-		bool	operator>(Fixed& f);
-		bool	operator<(Fixed& f);
-		bool	operator>=(Fixed& f);
-		bool	operator<=(Fixed& f);
-		bool	operator==(Fixed& f);
-		bool	operator!=(Fixed& f);
+		bool	operator>(Fixed& f) const;
+		bool	operator<(Fixed& f) const;
+		bool	operator>=(Fixed& f) const;
+		bool	operator<=(Fixed& f) const;
+		bool	operator==(Fixed& f) const;
+		bool	operator!=(Fixed& f) const;
 
 		// + - * /
-		Fixed	operator+(Fixed f);
-		Fixed	operator-(Fixed f);
-		Fixed	operator*(Fixed f);
-		Fixed	operator/(Fixed f);
+		Fixed	operator+(Fixed f) const;
+		Fixed	operator-(Fixed f) const;
+		Fixed	operator*(Fixed f) const;
+		Fixed	operator/(Fixed f) const;
 		
 		// postfix prefix ++ --
 		Fixed	operator++();

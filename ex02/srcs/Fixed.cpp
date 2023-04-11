@@ -6,7 +6,7 @@
 /*   By: suchua <suchua@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 20:04:29 by suchua            #+#    #+#             */
-/*   Updated: 2023/04/07 00:19:50 by suchua           ###   ########.fr       */
+/*   Updated: 2023/04/11 17:16:26 by suchua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,14 @@ Fixed::~Fixed(void)
 
 Fixed::Fixed(const Fixed& other)
 {
-	this->fixedNum = other.fixedNum;
 	std::cout << "Copy constructor called" << std::endl;
+	*this = other;
 }
 
 Fixed& Fixed::operator=(const Fixed& other)
 {
 	std::cout << "Copy assignment called" << std::endl;
-	if (this != &other)
-		this->fixedNum = other.fixedNum;
+	this->fixedNum = other.fixedNum;
 	return *this;
 }
 
@@ -52,27 +51,29 @@ void	Fixed::setRawBits(const int raw)
 
 Fixed::Fixed(int const num)
 {
-	float	eps = 1 << Fixed::fracBits;
 	std::cout << "Int constructor called" << std::endl;
+
+	float	eps = 1 << fracBits;
 	this->fixedNum = num * (eps);
 }
 
 Fixed::Fixed(float const num)
 {
-	float	eps = 1 << Fixed::fracBits;
 	std::cout << "Float constructor called" << std::endl;
+
+	float	eps = 1 << fracBits;
 	this->fixedNum = static_cast<int>(roundf(num * (eps)));
 }
 
 int	Fixed::toInt(void) const
 {
-	float	eps = 1 << Fixed::fracBits;
+	float	eps = 1 << fracBits;
 	return this->fixedNum / eps;
 }
 
 float	Fixed::toFloat(void) const
 {
-	float	eps = 1 << Fixed::fracBits;
+	float	eps = 1 << fracBits;
 	return (this->fixedNum / static_cast<float>(eps));
 }
 
@@ -84,90 +85,90 @@ std::ostream&	operator<<(std::ostream& out, const Fixed& f)
 
 Fixed	Fixed::operator++(int)
 {
-	float	eps = 1 << Fixed::fracBits;
+	float	eps = 1 << fracBits;
 	float	inverse_eps = 1.0f / eps;
 
-	Fixed	temp(*this);
-	fixedNum = (fixedNum + eps) * inverse_eps;
-	return temp;
+	Fixed	tmp(*this);
+	fixedNum = (fixedNum * eps + eps) * inverse_eps;
+	return tmp;
 }
 
 Fixed	Fixed::operator++()
 {
-	float	eps = 1 << Fixed::fracBits;
+	float	eps = 1 << fracBits;
 	float	inverse_eps = 1.0f / eps;
 
-	fixedNum = (fixedNum + eps) * inverse_eps;
+	fixedNum = (fixedNum * eps + eps) * inverse_eps;
 	return *this;
 }
 
 Fixed	Fixed::operator--(int)
 {
-	float	eps = 1 << Fixed::fracBits;
+	float	eps = 1 << fracBits;
 	float	inverse_eps = 1.0f / eps;
 
-	Fixed	temp(*this);
-	fixedNum = (fixedNum - eps) * inverse_eps;
+	Fixed	temp(this->fixedNum);
+	fixedNum = (fixedNum * eps - eps) * inverse_eps;
 	return temp;
 }
 
 Fixed	Fixed::operator--()
 {
-	float	eps = 1 << Fixed::fracBits;
+	float	eps = 1 << fracBits;
 	float	inverse_eps = 1.0f / eps;
 
-	fixedNum = (fixedNum - eps) * inverse_eps;
+	fixedNum = (fixedNum * eps - eps) * inverse_eps;
 	return *this;
 }
 
-bool	Fixed::operator>(Fixed& f)
+bool	Fixed::operator>(Fixed& f) const
 {
 	return (this->toFloat() > f.toFloat());
 }
 
-bool	Fixed::operator<(Fixed& f)
+bool	Fixed::operator<(Fixed& f) const
 {
 	return (this->toFloat() < f.toFloat());	
 }
 
-bool	Fixed::operator>=(Fixed& f)
+bool	Fixed::operator>=(Fixed& f) const
 {
 	return (this->toFloat() >= f.toFloat());
 }
 
-bool	Fixed::operator<=(Fixed& f)
+bool	Fixed::operator<=(Fixed& f) const
 {
 	return (this->toFloat() <= f.toFloat());	
 }
 
-bool	Fixed::operator==(Fixed& f)
+bool	Fixed::operator==(Fixed& f) const
 {
 	return (this->toFloat() == f.toFloat());
 }
 
-bool	Fixed::operator!=(Fixed& f)
+bool	Fixed::operator!=(Fixed& f) const
 {
 	return (this->toFloat() != f.toFloat());
 }
 
-Fixed	Fixed::operator+(Fixed f)
+Fixed	Fixed::operator+(Fixed f) const
 {
-	return ((this->toFloat() + f.toFloat()));
+	return (Fixed(this->toFloat() + f.toFloat()));
 }
 
-Fixed	Fixed::operator-(Fixed f)
+Fixed	Fixed::operator-(Fixed f) const
 {
-	return ((this->toFloat() - f.toFloat()));
+	return (Fixed(this->toFloat() - f.toFloat()));
 }
 
-Fixed	Fixed::operator*(Fixed f)
+Fixed	Fixed::operator*(Fixed f) const
 {
-	return ((this->toFloat() * f.toFloat()));
+	return (Fixed(this->toFloat() * f.toFloat()));
 }
 
-Fixed	Fixed::operator/(Fixed f)
+Fixed	Fixed::operator/(Fixed f) const
 {
-	return ((this->toFloat() / f.toFloat()));
+	return (Fixed(this->toFloat() / f.toFloat()));
 }
 
 Fixed&	Fixed::min(Fixed& f1, Fixed& f2)
